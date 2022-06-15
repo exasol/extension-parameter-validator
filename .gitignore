@@ -36,3 +36,7 @@ pom.xml.versionsBackup
 vendor/
 *.kate-swp
 extension-manager
+
+node_modules
+dist
+dist.js
