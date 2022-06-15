@@ -1,4 +1,4 @@
-name: CI Build Parameter Validator
+name: CI Build
 
 on:
   push:
@@ -22,19 +22,12 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-          cache-dependency-path: extension-parameter-validator/package-lock.json
       - name: Install dependencies
-        run: |
-          cd extension-parameter-validator/
-          npm ci
+        run: npm ci
       - name: Run tests
-        run: |
-          cd extension-parameter-validator/
-          npm test
+        run: npm test
       - name: Run build
-        run: |
-          cd extension-parameter-validator/
-          npm run build
+        run: npm run build
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
