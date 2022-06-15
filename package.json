@@ -1,9 +1,9 @@
 {
   "name": "@exasol/extension-parameter-validator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/extensionParameterValidator.js",
-  "types": "dist/api.d.ts",
+  "types": "dist/extensionParameterValidator.d.ts",
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
