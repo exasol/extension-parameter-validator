@@ -1,5 +1,5 @@
 {
-  "name": "@exasol/extension-manager-parameter-validator",
+  "name": "@exasol/extension-parameter-validator",
   "version": "0.1.0",
   "license": "MIT",
   "main": "dist/extensionParameterValidator.js",
