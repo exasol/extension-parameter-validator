@@ -1,9 +1,10 @@
-import {Parameter, ParameterValues, StringParameter} from "@exasol/extension-manager-interface";
+import { ParameterValues } from "@exasol/extension-manager-interface";
+import { Parameter, StringParameter } from "@exasol/extension-manager-interface/dist/parameters";
 
-const SUCCESS_RESULT = {success: true, message: ""};
+const SUCCESS_RESULT = { success: true, message: "" };
 
 function validationError(errorMessage: string): ValidationResult {
-    return {success: false, message: errorMessage}
+    return { success: false, message: errorMessage }
 }
 
 export function validateParameter(definition: Parameter, value: string): ValidationResult {
@@ -17,6 +18,8 @@ export function validateParameter(definition: Parameter, value: string): Validat
         switch (definition.type) {
             case "string":
                 return validateStringParameter(definition, value);
+            case "boolean":
+                return validateBooleanParameter(value);
             default:
                 return validationError("unsupported parameter type '" + definition.type + "'");
         }
@@ -27,7 +30,7 @@ export function validateParameters(definitions: Parameter[], values: ParameterVa
     let findings: string[] = []
     for (const key in definitions) {
         let definition = definitions[key];
-        let singleResult = validateParameter(definition, values[definition.id])
+        let singleResult = validateParameter(definition, getValue(definition.id, values))
         if (!singleResult.success) {
             findings.push(definition.name + ": " + singleResult.message)
         }
@@ -39,8 +42,17 @@ export function validateParameters(definitions: Parameter[], values: ParameterVa
     }
 }
 
+function getValue(id: string, values: ParameterValues): string | undefined {
+    const value = values.values.find(v => v.name === id);
+    if (value) {
+        return value.value
+    } else {
+        return undefined
+    }
+}
+
 function validateStringParameter(definition: StringParameter, value: string) {
-    if (definition.regex !== null) {
+    if (definition.regex) {
         if (!new RegExp(definition.regex).test(value)) {
             return validationError("The value has an invalid format.")
         }
@@ -48,6 +60,12 @@ function validateStringParameter(definition: StringParameter, value: string) {
     return SUCCESS_RESULT
 }
 
+function validateBooleanParameter(value:string){
+    if(value === "true" || value==="false"){
+        return SUCCESS_RESULT
+    }
+    return validationError("Boolean value must be 'true' or 'false'.")
+}
 
 export interface ValidationResult {
     /** true of the validation passed with no findings. */
