@@ -40,3 +40,5 @@ extension-manager
 node_modules
 dist
 dist.js
+/.scannerwork/
+/coverage/

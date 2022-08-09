@@ -1,16 +1,30 @@
-import {validateParameter, validateParameters} from "./extensionParameterValidator";
+import { validateParameter, validateParameters } from "./extensionParameterValidator";
 
 describe("extensionParameterValidator", () => {
     describe("validateParameter", () => {
+        const successResult = { success: true, message: "" }
+        const failure = (message: string) => { return { success: false, message } };
+        const invalidFormat = failure("The value has an invalid format.")
+        const requiredParameter = failure("This is a required parameter.")
+        const invalidBoolean = failure("Boolean value must be 'true' or 'false'.")
         it.each`
         parameter  | value |  expectedResult
-        ${{type: "string", regex: "^a+$"}}   |${"test"} | ${{success: false, message: "The value has an invalid format."} }
-        ${{type: "string", regex: "^t+$"}} |${"test"}  | ${{success: false, message: "The value has an invalid format."} }
-        ${{type: "string", regex: "^test$"}}  |${"test"} | ${{success: true, message: ""} }
-        ${{type: "string", regex: "^.*$"}} |${"test"}  | ${{success: true, message: ""} }
-        ${{type: "string"}}  |${"test"} | ${{success: true, message: ""} }
-        ${{type: "string", required: true}}  |${""} | ${{success: false, message: "This is a required field."} } 
-        `('validates $parameter as $result', ({parameter, value, expectedResult}) => {
+        ${{ type: "string", regex: "^a+$" }}   |${"test"} | ${invalidFormat}
+        ${{ type: "string", regex: "^t+$" }} |${"test"}  | ${invalidFormat}
+        ${{ type: "string", regex: "^test$" }}  |${"test"} | ${successResult}
+        ${{ type: "string", regex: "^.*$" }} |${"test"}  | ${successResult}
+        ${{ type: "string" }}  |${"test"} | ${successResult}
+        ${{ type: "string", required: true }}  |${""} | ${requiredParameter}
+        ${{ type: "boolean" }} | ${"true"} | ${successResult}
+        ${{ type: "boolean" }} | ${"false"} | ${successResult}
+        ${{ type: "boolean" }} | ${"TRUE"} | ${invalidBoolean}
+        ${{ type: "boolean", required: true }} | ${undefined} | ${requiredParameter}
+        ${{ type: "boolean", required: true }} | ${""} | ${requiredParameter}
+        ${{ type: "boolean", required: false }} | ${undefined} | ${successResult}
+        ${{ type: "boolean", required: false }} | ${""} | ${successResult}
+        ${{ type: "boolean" }} | ${"False"} | ${invalidBoolean}
+        ${{ type: "boolean" }} | ${"wrong"} | ${invalidBoolean}
+        `('validates $parameter as $expectedResult', ({ parameter, value, expectedResult }) => {
             let result = validateParameter(parameter, value);
             expect(result).toEqual(expectedResult)
         })
@@ -18,20 +32,22 @@ describe("extensionParameterValidator", () => {
 
     describe("validateParameters", () => {
         it("detects a missing parameter", () => {
-            let result = validateParameters([{id: "param1", type: "string", name: "Parameter 1", required: true}], {});
-            expect(result).toEqual({success: false, message: "Parameter 1: This is a required field."})
+            let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [] });
+            expect(result).toEqual({ success: false, message: "Parameter 1: This is a required parameter." })
         })
 
         it("accepts a valid parameter", () => {
-            let result = validateParameters([{id: "param1", type: "string", name: "Parameter 1", required: true}], {param1: "test"});
-            expect(result).toEqual({success: true, message: ""})
+            let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [{ name: "param1", value: "test" }] });
+            expect(result).toEqual({ success: true, message: "" })
         })
 
         it("rejects invalid parameters", () => {
-            let result = validateParameters([{id: "param1", type: "string", name: "Parameter 1", regex: "^a+$"},
-                {id: "param2", type: "string", name: "Parameter 2", regex: "^a+$"}], {param1: "test", param2: "test"});
-            expect(result).toEqual({success: false, message: "Parameter 1: The value has an invalid format.\n" +
-                    "Parameter 2: The value has an invalid format."})
+            let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", regex: "^a+$" },
+            { id: "param2", type: "string", name: "Parameter 2", regex: "^a+$" }], { values: [{ name: "param1", value: "test" }, { name: "param2", value: "test" }] });
+            expect(result).toEqual({
+                success: false, message: "Parameter 1: The value has an invalid format.\n" +
+                    "Parameter 2: The value has an invalid format."
+            })
         })
     })
 })
