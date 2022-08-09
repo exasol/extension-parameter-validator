@@ -5,7 +5,7 @@ describe("extensionParameterValidator", () => {
         const successResult = { success: true, message: "" }
         const failure = (message: string) => { return { success: false, message } };
         const invalidFormat = failure("The value has an invalid format.")
-        const requiredInput = failure("This is a required input.")
+        const requiredParameter = failure("This is a required parameter.")
         const invalidBoolean = failure("Boolean value must be 'true' or 'false'.")
         it.each`
         parameter  | value |  expectedResult
@@ -14,12 +14,12 @@ describe("extensionParameterValidator", () => {
         ${{ type: "string", regex: "^test$" }}  |${"test"} | ${successResult}
         ${{ type: "string", regex: "^.*$" }} |${"test"}  | ${successResult}
         ${{ type: "string" }}  |${"test"} | ${successResult}
-        ${{ type: "string", required: true }}  |${""} | ${requiredInput}
+        ${{ type: "string", required: true }}  |${""} | ${requiredParameter}
         ${{ type: "boolean" }} | ${"true"} | ${successResult}
         ${{ type: "boolean" }} | ${"false"} | ${successResult}
         ${{ type: "boolean" }} | ${"TRUE"} | ${invalidBoolean}
-        ${{ type: "boolean", required: true }} | ${undefined} | ${requiredInput}
-        ${{ type: "boolean", required: true }} | ${""} | ${requiredInput}
+        ${{ type: "boolean", required: true }} | ${undefined} | ${requiredParameter}
+        ${{ type: "boolean", required: true }} | ${""} | ${requiredParameter}
         ${{ type: "boolean", required: false }} | ${undefined} | ${successResult}
         ${{ type: "boolean", required: false }} | ${""} | ${successResult}
         ${{ type: "boolean" }} | ${"False"} | ${invalidBoolean}
@@ -33,7 +33,7 @@ describe("extensionParameterValidator", () => {
     describe("validateParameters", () => {
         it("detects a missing parameter", () => {
             let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [] });
-            expect(result).toEqual({ success: false, message: "Parameter 1: This is a required input." })
+            expect(result).toEqual({ success: false, message: "Parameter 1: This is a required parameter." })
         })
 
         it("accepts a valid parameter", () => {
