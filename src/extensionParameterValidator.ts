@@ -60,8 +60,8 @@ function validateStringParameter(definition: StringParameter, value: string) {
     return SUCCESS_RESULT
 }
 
-function validateBooleanParameter(value:string){
-    if(value === "true" || value==="false"){
+function validateBooleanParameter(value: string) {
+    if (value === "true" || value === "false") {
         return SUCCESS_RESULT
     }
     return validationError("Boolean value must be 'true' or 'false'.")

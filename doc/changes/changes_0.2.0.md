@@ -1,4 +1,4 @@
-# extension-parameter-validator 0.2.0, released 2022-07-??
+# extension-parameter-validator 0.2.0, released 2022-08-09
 
 Code name: Add support for boolean parameters
 
