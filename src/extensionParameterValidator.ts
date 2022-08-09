@@ -10,7 +10,7 @@ function validationError(errorMessage: string): ValidationResult {
 export function validateParameter(definition: Parameter, value: string): ValidationResult {
     if (value === undefined || value === null || value === "") {
         if (definition.required) {
-            return validationError("This is a required field.")
+            return validationError("This is a required input.")
         } else {
             return SUCCESS_RESULT;
         }
