@@ -27,10 +27,9 @@ export function validateParameter(definition: Parameter, value: string): Validat
 }
 
 export function validateParameters(definitions: Parameter[], values: ParameterValues): ValidationResult {
-    let findings: string[] = []
-    for (const key in definitions) {
-        let definition = definitions[key];
-        let singleResult = validateParameter(definition, getValue(definition.id, values))
+    const findings: string[] = []
+    for (const definition of definitions) {
+        const singleResult = validateParameter(definition, getValue(definition.id, values))
         if (!singleResult.success) {
             findings.push(definition.name + ": " + singleResult.message)
         }
