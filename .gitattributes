@@ -1,0 +1,9 @@
+*.sh    text eol=lf
+*.bat   text eol=crlf
+
+dependencies.md                             linguist-generated=true
+doc/changes/changelog.md                    linguist-generated=true
+.github/workflows/broken_links_checker.yml  linguist-generated=true
+package-lock.json                           linguist-generated=true
+.github/workflows/project-keeper-verify.yml linguist-generated=true
+.github/workflows/project-keeper.sh         linguist-generated=true

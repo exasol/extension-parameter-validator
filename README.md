@@ -9,3 +9,4 @@ This project contains a validator for parameters for Exasol extensions.
 
 * [Changelog](doc/changes/changelog.md)
 * [Developers Guide](doc/developers_guide/developers_guide.md)
+* [Dependencies](dependencies.md)
