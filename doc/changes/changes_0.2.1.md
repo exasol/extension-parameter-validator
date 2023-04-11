@@ -1,4 +1,4 @@
-# Extension Parameter Validator 0.2.1, released 2023-04-04
+# Extension Parameter Validator 0.2.1, released 2023-04-11
 
 Code name: Upgrade dependencies on top of 0.2.0
 
