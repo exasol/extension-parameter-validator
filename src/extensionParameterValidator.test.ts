@@ -35,8 +35,10 @@ describe("extensionParameterValidator", () => {
         ${{ type: "boolean" }}                  | ${"FALSE"}   | ${invalidBoolean}
         ${{ type: "boolean" }}                  | ${"False"}   | ${invalidBoolean}
         ${{ type: "boolean", required: true }}  | ${undefined} | ${requiredParameter}
+        ${{ type: "boolean", required: true }}  | ${null}      | ${requiredParameter}
         ${{ type: "boolean", required: true }}  | ${""}        | ${requiredParameter}
         ${{ type: "boolean", required: false }} | ${undefined} | ${successResult}
+        ${{ type: "boolean", required: false }} | ${null}      | ${successResult}
         ${{ type: "boolean", required: false }} | ${""}        | ${successResult}
         ${{ type: "boolean" }}                  | ${"False"}   | ${invalidBoolean}
         ${{ type: "boolean" }}                  | ${"wrong"}   | ${invalidBoolean}
@@ -44,7 +46,15 @@ describe("extensionParameterValidator", () => {
         ${{ type: "select", options: options }} | ${"b"}       | ${successResult}
         ${{ type: "select", options: options }} | ${"c"}       | ${failure("The value is not allowed. Possible values are a, b")}
         ${{ type: "select", options: [] }}      | ${"a"}       | ${failure("No option available for this parameter.")}
-        `('validates $parameter as $expectedResult', ({ parameter, value, expectedResult }) => {
+        ${{ type: "select", options, required: false }} | ${""}        | ${successResult}
+        ${{ type: "select", options, required: false }} | ${undefined} | ${successResult}
+        ${{ type: "select", options, required: false }} | ${null}      | ${successResult}
+        ${{ type: "select", options, required: false }} | ${"wrong"}   | ${failure("The value is not allowed. Possible values are a, b")}
+        ${{ type: "select", options, required: true }}  | ${undefined} | ${requiredParameter}
+        ${{ type: "select", options, required: true }}  | ${null}      | ${requiredParameter}
+        ${{ type: "select", options, required: true }}  | ${"a"}       | ${successResult}
+        ${{ type: "select", options, required: true }}  | ${"wrong"}   | ${failure("The value is not allowed. Possible values are a, b")}
+        `('validates $parameter with value $value as $expectedResult', ({ parameter, value, expectedResult }) => {
             let result = validateParameter(parameter, value);
             expect(result).toEqual(expectedResult)
         })
