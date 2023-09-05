@@ -9,6 +9,7 @@ describe("extensionParameterValidator", () => {
         const invalidBoolean = failure("Boolean value must be 'true' or 'false'.")
         it.each`
         parameter                               | value        | expectedResult
+        ${{ type: "unsupported" }}              | ${"test"}    | ${failure("unsupported parameter type 'unsupported'")}
         ${{ type: "string", regex: "^a+$" }}    | ${"test"}    | ${invalidFormat}
         ${{ type: "string", regex: "^t+$" }}    | ${"test"}    | ${invalidFormat}
         ${{ type: "string", regex: "^test$" }}  | ${"test"}    | ${successResult}
