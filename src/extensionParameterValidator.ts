@@ -7,7 +7,7 @@ function validationError(errorMessage: string): ValidationResultFailure {
     return { success: false, message: errorMessage }
 }
 
-export function validateParameter(definition: Parameter, value: string): ValidationResult {
+export function validateParameter(definition: Parameter, value: string | undefined): ValidationResult {
     if (value === undefined || value === null || value === "") {
         if (definition.required) {
             return validationError("This is a required parameter.")
