@@ -6,6 +6,8 @@ Code name: Support `select` parameter type
 
 This release adds support for the `select` parameter type.
 
+The release also re-defines the `ValidationResult` type as `ValidationResultSuccess | ValidationResultFailure`. This allows accessing the `message` field only for validation failures.
+
 ## Features
 
 * #10: Added support for the `select` parameter type
