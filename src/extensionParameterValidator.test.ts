@@ -1,29 +1,29 @@
-import { validateParameter, validateParameters } from "./extensionParameterValidator";
+import { ValidationResult, validateParameter, validateParameters } from "./extensionParameterValidator";
 
 describe("extensionParameterValidator", () => {
     describe("validateParameter", () => {
-        const successResult = { success: true, message: "" }
+        const successResult: ValidationResult = { success: true, message: "" }
         const failure = (message: string) => { return { success: false, message } };
         const invalidFormat = failure("The value has an invalid format.")
         const requiredParameter = failure("This is a required parameter.")
         const invalidBoolean = failure("Boolean value must be 'true' or 'false'.")
         it.each`
-        parameter  | value |  expectedResult
-        ${{ type: "string", regex: "^a+$" }}   |${"test"} | ${invalidFormat}
-        ${{ type: "string", regex: "^t+$" }} |${"test"}  | ${invalidFormat}
-        ${{ type: "string", regex: "^test$" }}  |${"test"} | ${successResult}
-        ${{ type: "string", regex: "^.*$" }} |${"test"}  | ${successResult}
-        ${{ type: "string" }}  |${"test"} | ${successResult}
-        ${{ type: "string", required: true }}  |${""} | ${requiredParameter}
-        ${{ type: "boolean" }} | ${"true"} | ${successResult}
-        ${{ type: "boolean" }} | ${"false"} | ${successResult}
-        ${{ type: "boolean" }} | ${"TRUE"} | ${invalidBoolean}
-        ${{ type: "boolean", required: true }} | ${undefined} | ${requiredParameter}
-        ${{ type: "boolean", required: true }} | ${""} | ${requiredParameter}
+        parameter                               | value        | expectedResult
+        ${{ type: "string", regex: "^a+$" }}    | ${"test"}    | ${invalidFormat}
+        ${{ type: "string", regex: "^t+$" }}    | ${"test"}    | ${invalidFormat}
+        ${{ type: "string", regex: "^test$" }}  | ${"test"}    | ${successResult}
+        ${{ type: "string", regex: "^.*$" }}    | ${"test"}    | ${successResult}
+        ${{ type: "string" }}                   | ${"test"}    | ${successResult}
+        ${{ type: "string", required: true }}   | ${""}        | ${requiredParameter}
+        ${{ type: "boolean" }}                  | ${"true"}    | ${successResult}
+        ${{ type: "boolean" }}                  | ${"false"}   | ${successResult}
+        ${{ type: "boolean" }}                  | ${"TRUE"}    | ${invalidBoolean}
+        ${{ type: "boolean", required: true }}  | ${undefined} | ${requiredParameter}
+        ${{ type: "boolean", required: true }}  | ${""}        | ${requiredParameter}
         ${{ type: "boolean", required: false }} | ${undefined} | ${successResult}
-        ${{ type: "boolean", required: false }} | ${""} | ${successResult}
-        ${{ type: "boolean" }} | ${"False"} | ${invalidBoolean}
-        ${{ type: "boolean" }} | ${"wrong"} | ${invalidBoolean}
+        ${{ type: "boolean", required: false }} | ${""}        | ${successResult}
+        ${{ type: "boolean" }}                  | ${"False"}   | ${invalidBoolean}
+        ${{ type: "boolean" }}                  | ${"wrong"}   | ${invalidBoolean}
         `('validates $parameter as $expectedResult', ({ parameter, value, expectedResult }) => {
             let result = validateParameter(parameter, value);
             expect(result).toEqual(expectedResult)
