@@ -1,3 +1,4 @@
+import { SelectOption } from "@exasol/extension-manager-interface";
 import { ValidationResult, validateParameter, validateParameters } from "./extensionParameterValidator";
 
 describe("extensionParameterValidator", () => {
@@ -7,6 +8,7 @@ describe("extensionParameterValidator", () => {
         const invalidFormat = failure("The value has an invalid format.")
         const requiredParameter = failure("This is a required parameter.")
         const invalidBoolean = failure("Boolean value must be 'true' or 'false'.")
+        const options: SelectOption[] = [{ id: "a", name: "Option A" }, { id: "b", name: "Option B" }]
         it.each`
         parameter                               | value        | expectedResult
         ${{ type: "unsupported" }}              | ${"test"}    | ${failure("unsupported parameter type 'unsupported'")}
@@ -25,6 +27,10 @@ describe("extensionParameterValidator", () => {
         ${{ type: "boolean", required: false }} | ${""}        | ${successResult}
         ${{ type: "boolean" }}                  | ${"False"}   | ${invalidBoolean}
         ${{ type: "boolean" }}                  | ${"wrong"}   | ${invalidBoolean}
+        ${{ type: "select", options: options }} | ${"a"}       | ${successResult}
+        ${{ type: "select", options: options }} | ${"b"}       | ${successResult}
+        ${{ type: "select", options: options }} | ${"c"}       | ${failure("The value is not allowed. Possible values are a, b")}
+        ${{ type: "select", options: [] }}      | ${"a"}       | ${failure("No option available for this parameter.")}
         `('validates $parameter as $expectedResult', ({ parameter, value, expectedResult }) => {
             let result = validateParameter(parameter, value);
             expect(result).toEqual(expectedResult)
