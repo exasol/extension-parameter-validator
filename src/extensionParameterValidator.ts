@@ -70,7 +70,8 @@ function validateSelectParameter(definition: SelectParameter, value: string) {
     if (possibleValues.includes(value)) {
         return SUCCESS_RESULT
     }
-    return validationError(`The value is not allowed. Possible values are ${possibleValues.join(', ')}`)
+    const quotedValues = possibleValues.map(value => `'${value}'`).join(', ')
+    return validationError(`The value is not allowed. Possible values are ${quotedValues}.`)
 }
 
 function validateBooleanParameter(value: string) {
