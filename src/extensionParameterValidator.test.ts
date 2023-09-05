@@ -13,11 +13,20 @@ describe("extensionParameterValidator", () => {
         parameter                               | value        | expectedResult
         ${{ type: "unsupported" }}              | ${"test"}    | ${failure("unsupported parameter type 'unsupported'")}
         ${{ type: "string", regex: "^a+$" }}    | ${"test"}    | ${invalidFormat}
+        ${{ type: "string", regex: "^a+$" }}    | ${"aa"}      | ${successResult}
         ${{ type: "string", regex: "^t+$" }}    | ${"test"}    | ${invalidFormat}
         ${{ type: "string", regex: "^test$" }}  | ${"test"}    | ${successResult}
+        ${{ type: "string", regex: "^test$" }}  | ${" test"}   | ${invalidFormat}
+        ${{ type: "string", regex: "^test$" }}  | ${"test "}   | ${invalidFormat}
         ${{ type: "string", regex: "^.*$" }}    | ${"test"}    | ${successResult}
+        ${{ type: "string", regex: "^.*$" }}    | ${" test "}  | ${successResult}
         ${{ type: "string" }}                   | ${"test"}    | ${successResult}
         ${{ type: "string", required: true }}   | ${""}        | ${requiredParameter}
+        ${{ type: "string", required: true }}   | ${undefined} | ${requiredParameter}
+        ${{ type: "string", required: true }}   | ${null}      | ${requiredParameter}
+        ${{ type: "string", required: false }}  | ${""}        | ${successResult}
+        ${{ type: "string", required: false }}  | ${undefined} | ${successResult}
+        ${{ type: "string", required: false }}  | ${null}      | ${successResult}
         ${{ type: "boolean" }}                  | ${"true"}    | ${successResult}
         ${{ type: "boolean" }}                  | ${"false"}   | ${successResult}
         ${{ type: "boolean" }}                  | ${" true"}   | ${invalidBoolean}
