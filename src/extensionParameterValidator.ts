@@ -1,13 +1,13 @@
 import { ParameterValues } from "@exasol/extension-manager-interface";
-import { Parameter, StringParameter } from "@exasol/extension-manager-interface/dist/parameters";
+import { Parameter, SelectParameter, StringParameter } from "@exasol/extension-manager-interface/dist/parameters";
 
-const SUCCESS_RESULT = { success: true, message: "" };
+const SUCCESS_RESULT: ValidationResultSuccess = { success: true };
 
-function validationError(errorMessage: string): ValidationResult {
+function validationError(errorMessage: string): ValidationResultFailure {
     return { success: false, message: errorMessage }
 }
 
-export function validateParameter(definition: Parameter, value: string): ValidationResult {
+export function validateParameter(definition: Parameter, value: string | undefined): ValidationResult {
     if (value === undefined || value === null || value === "") {
         if (definition.required) {
             return validationError("This is a required parameter.")
@@ -15,13 +15,16 @@ export function validateParameter(definition: Parameter, value: string): Validat
             return SUCCESS_RESULT;
         }
     } else {
+        const definitionType = definition.type
         switch (definition.type) {
             case "string":
                 return validateStringParameter(definition, value);
             case "boolean":
                 return validateBooleanParameter(value);
+            case "select":
+                return validateSelectParameter(definition, value)
             default:
-                return validationError("unsupported parameter type '" + definition.type + "'");
+                return validationError(`unsupported parameter type '${definitionType}'`);
         }
     }
 }
@@ -30,8 +33,8 @@ export function validateParameters(definitions: Parameter[], values: ParameterVa
     const findings: string[] = []
     for (const definition of definitions) {
         const singleResult = validateParameter(definition, getValue(definition.id, values))
-        if (!singleResult.success) {
-            findings.push(definition.name + ": " + singleResult.message)
+        if (singleResult.success === false) {
+            findings.push(`${definition.name}: ${singleResult.message}`)
         }
     }
     if (findings.length == 0) {
@@ -59,6 +62,18 @@ function validateStringParameter(definition: StringParameter, value: string) {
     return SUCCESS_RESULT
 }
 
+function validateSelectParameter(definition: SelectParameter, value: string) {
+    const possibleValues = definition.options.map(option => option.id)
+    if (possibleValues.length === 0) {
+        return validationError("No option available for this parameter.")
+    }
+    if (possibleValues.includes(value)) {
+        return SUCCESS_RESULT
+    }
+    const quotedValues = possibleValues.map(value => `'${value}'`).join(', ')
+    return validationError(`The value is not allowed. Possible values are ${quotedValues}.`)
+}
+
 function validateBooleanParameter(value: string) {
     if (value === "true" || value === "false") {
         return SUCCESS_RESULT
@@ -66,9 +81,14 @@ function validateBooleanParameter(value: string) {
     return validationError("Boolean value must be 'true' or 'false'.")
 }
 
-export interface ValidationResult {
-    /** true of the validation passed with no findings. */
-    success: boolean
+export type ValidationResult = ValidationResultSuccess | ValidationResultFailure
+
+export interface ValidationResultSuccess {
+    success: true
+}
+
+export interface ValidationResultFailure {
+    success: false
     /** Validation error description. If multiples errors were found they are separated by \n. */
     message: string
 }
