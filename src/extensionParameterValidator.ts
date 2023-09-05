@@ -1,9 +1,9 @@
 import { ParameterValues } from "@exasol/extension-manager-interface";
 import { Parameter, StringParameter } from "@exasol/extension-manager-interface/dist/parameters";
 
-const SUCCESS_RESULT = { success: true, message: "" };
+const SUCCESS_RESULT: ValidationResultSuccess = { success: true };
 
-function validationError(errorMessage: string): ValidationResult {
+function validationError(errorMessage: string): ValidationResultFailure {
     return { success: false, message: errorMessage }
 }
 
@@ -30,7 +30,7 @@ export function validateParameters(definitions: Parameter[], values: ParameterVa
     const findings: string[] = []
     for (const definition of definitions) {
         const singleResult = validateParameter(definition, getValue(definition.id, values))
-        if (!singleResult.success) {
+        if (singleResult.success === false) {
             findings.push(definition.name + ": " + singleResult.message)
         }
     }
@@ -66,9 +66,14 @@ function validateBooleanParameter(value: string) {
     return validationError("Boolean value must be 'true' or 'false'.")
 }
 
-export interface ValidationResult {
-    /** true of the validation passed with no findings. */
-    success: boolean
+export type ValidationResult = ValidationResultSuccess | ValidationResultFailure
+
+export interface ValidationResultSuccess {
+    success: true
+}
+
+export interface ValidationResultFailure {
+    success: false
     /** Validation error description. If multiples errors were found they are separated by \n. */
     message: string
 }

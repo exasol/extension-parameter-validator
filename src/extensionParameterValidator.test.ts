@@ -2,7 +2,7 @@ import { ValidationResult, validateParameter, validateParameters } from "./exten
 
 describe("extensionParameterValidator", () => {
     describe("validateParameter", () => {
-        const successResult: ValidationResult = { success: true, message: "" }
+        const successResult: ValidationResult = { success: true }
         const failure = (message: string) => { return { success: false, message } };
         const invalidFormat = failure("The value has an invalid format.")
         const requiredParameter = failure("This is a required parameter.")
@@ -38,7 +38,7 @@ describe("extensionParameterValidator", () => {
 
         it("accepts a valid parameter", () => {
             let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [{ name: "param1", value: "test" }] });
-            expect(result).toEqual({ success: true, message: "" })
+            expect(result).toEqual({ success: true })
         })
 
         it("rejects invalid parameters", () => {
