@@ -20,7 +20,11 @@ describe("extensionParameterValidator", () => {
         ${{ type: "string", required: true }}   | ${""}        | ${requiredParameter}
         ${{ type: "boolean" }}                  | ${"true"}    | ${successResult}
         ${{ type: "boolean" }}                  | ${"false"}   | ${successResult}
+        ${{ type: "boolean" }}                  | ${" true"}   | ${invalidBoolean}
         ${{ type: "boolean" }}                  | ${"TRUE"}    | ${invalidBoolean}
+        ${{ type: "boolean" }}                  | ${"True"}    | ${invalidBoolean}
+        ${{ type: "boolean" }}                  | ${"FALSE"}   | ${invalidBoolean}
+        ${{ type: "boolean" }}                  | ${"False"}   | ${invalidBoolean}
         ${{ type: "boolean", required: true }}  | ${undefined} | ${requiredParameter}
         ${{ type: "boolean", required: true }}  | ${""}        | ${requiredParameter}
         ${{ type: "boolean", required: false }} | ${undefined} | ${successResult}
