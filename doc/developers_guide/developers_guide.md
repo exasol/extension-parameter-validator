@@ -1,5 +1,9 @@
 # Developers Guide
 
+## Initial Setup
+
+Install [NodeJS 22](https://nodejs.org/en/download).
+
 ## Releasing
 
 Currently we release this project by hand.
