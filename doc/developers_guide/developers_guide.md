@@ -16,6 +16,12 @@ Run sonar:
 sonar-scanner -D sonar.token=$SONAR_TOKEN
 ```
 
+### Upgrade Dependencies
+
+```sh
+npx npm-check-updates -u && npm install
+```
+
 ## Releasing
 
 Currently we release this project by hand.
