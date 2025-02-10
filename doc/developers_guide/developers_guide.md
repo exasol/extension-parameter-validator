@@ -4,6 +4,18 @@
 
 Install [NodeJS 22](https://nodejs.org/en/download).
 
+## Development
+
+### Run Sonar Locally
+
+Install the latest [Sonar CLI](https://docs.sonarsource.com/sonarqube-server/latest/analyzing-source-code/scanners/sonarscanner/).
+
+Run sonar:
+
+```sh
+sonar-scanner -D sonar.token=$SONAR_TOKEN
+```
+
 ## Releasing
 
 Currently we release this project by hand.
