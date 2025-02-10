@@ -42,3 +42,4 @@ dist
 dist.js
 /.scannerwork/
 /coverage/
+/exasol-extension-parameter-validator-*.tgz
