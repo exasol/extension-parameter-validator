@@ -56,24 +56,24 @@ describe("extensionParameterValidator", () => {
         ${{ type: "select", options, required: true }}  | ${"a"}       | ${successResult}
         ${{ type: "select", options, required: true }}  | ${"wrong"}   | ${invalidSelectParam}
         `('validates $parameter with value $value as $expectedResult', ({ parameter, value, expectedResult }) => {
-            let result = validateParameter(parameter, value);
+            const result = validateParameter(parameter, value);
             expect(result).toEqual(expectedResult)
         })
     })
 
     describe("validateParameters", () => {
         it("detects a missing parameter", () => {
-            let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [] });
+            const result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [] });
             expect(result).toEqual({ success: false, message: "Parameter 1: This is a required parameter." })
         })
 
         it("accepts a valid parameter", () => {
-            let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [{ name: "param1", value: "test" }] });
+            const result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", required: true }], { values: [{ name: "param1", value: "test" }] });
             expect(result).toEqual({ success: true })
         })
 
         it("rejects invalid parameters", () => {
-            let result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", regex: "^a+$" },
+            const result = validateParameters([{ id: "param1", type: "string", name: "Parameter 1", regex: "^a+$" },
             { id: "param2", type: "string", name: "Parameter 2", regex: "^a+$" }], { values: [{ name: "param1", value: "test" }, { name: "param2", value: "test" }] });
             expect(result).toEqual({
                 success: false, message: "Parameter 1: The value has an invalid format.\n" +
