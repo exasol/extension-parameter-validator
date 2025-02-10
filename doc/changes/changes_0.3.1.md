@@ -12,6 +12,7 @@ This release fixes vulnerabilities in build dependencies:
 ## Security
 
 * #12: Fixed vulnerabilities in build dependencies CVE-2023-45133 and CVE-2024-4068
+
 ## Dependency Updates
 
 ### Compile Dependency Updates
