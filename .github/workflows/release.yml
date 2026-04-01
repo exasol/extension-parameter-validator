@@ -25,6 +25,8 @@ jobs:
         run: npm run lint
       - name: Run build
         run: npm run build
+      - name: Run audit
+        run: npm audit
       - name: Create package
         run: npm pack
       - name: Publish package on NPM 📦
