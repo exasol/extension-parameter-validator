@@ -21,17 +21,15 @@ This release fixes the following dependabot alerts:
 
 ### Compile Dependency Updates
 
-* Updated `@exasol/extension-manager-interface:0.3.1` to `0.4.3`
+* Updated `@exasol/extension-manager-interface:0.4.3` to `0.5.1`
 
 ### Development Dependency Updates
 
-* Added `eslint:9.20.0`
-* Added `@types/node:^22.13.1`
-* Updated `ts-jest:^29.1.1` to `^29.2.5`
-* Updated `@types/jest:^29.5.4` to `^29.5.14`
-* Added `typescript-eslint:^8.23.0`
-* Updated `typescript:5.2.2` to `5.7.3`
-* Updated `ts-node:^10.9.1` to `^10.9.2`
-* Updated `jest:^29.6.4` to `^29.7.0`
-* Removed `@typescript-eslint/parser:^6.6.0`
-* Removed `@typescript-eslint/eslint-plugin:^6.6.0`
+* Updated `eslint:9.20.0` to `^10.1.0`
+* Added `@eslint/js:^10.0.1`
+* Updated `@types/node:^22.13.1` to `^25.5.0`
+* Updated `ts-jest:^29.2.5` to `^29.4.6`
+* Updated `@types/jest:^29.5.14` to `^30.0.0`
+* Updated `typescript-eslint:^8.23.0` to `^8.58.0`
+* Updated `typescript:5.7.3` to `^5.9.3`
+* Updated `jest:^29.7.0` to `^30.3.0`
