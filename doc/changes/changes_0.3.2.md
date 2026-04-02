@@ -4,7 +4,7 @@ Code name: Fix dependabot alerts in vulnerable dependencies
 
 ## Summary
 
-This release fixes the following dependabot alerts:
+This release migrates the release process to [trusted publishing](https://docs.npmjs.com/trusted-publishers). This improves security of the release process by avoiding tokens. The release also fixes the following dependabot alerts:
 
 - [#33: Prototype Pollution via parse() in NodeJS flatted](https://github.com/exasol/extension-parameter-validator/security/dependabot/33)
 - [#30: minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments](https://github.com/exasol/extension-parameter-validator/security/dependabot/30)
