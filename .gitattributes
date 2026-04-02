@@ -7,3 +7,4 @@ doc/changes/changelog.md                    linguist-generated=true
 package-lock.json                           linguist-generated=true
 .github/workflows/project-keeper-verify.yml linguist-generated=true
 .github/workflows/project-keeper.sh         linguist-generated=true
+SECURITY.md                                 linguist-generated=true
