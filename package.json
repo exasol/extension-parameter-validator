@@ -6,6 +6,10 @@
   "main": "dist/extensionParameterValidator.js",
   "types": "dist/extensionParameterValidator.d.ts",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/exasol/extension-parameter-validator"
+  },
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
